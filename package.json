@@ -1,6 +1,6 @@
 {
   "name": "memdb",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "In memory JSON database",
   "main": "src/index.mjs",
   "scripts": {
