@@ -5,59 +5,54 @@ Indexed in-memory JSON database
 
 ### Table
 
-A named export, this class represents a collection of JSON objects.
+The sole default export, this class represents a collection of JSON objects.
 
 #### constructor
-`t = new Table({ onsave, indexes { name: index } })`
+`t = new Table({ onsave, main, factory })`
 
-Creates a new table. Optionally you can supply hooks, factory and indexes here rather than adding later.
+Creates a new table. Optionally, you can supply the `onsave` callback,
+a primary uniqe index and/or a factory for new rows.
 
 #### .factory
 
-Set to a factory class for creating new items
+The factory class for creating new items
 
-#### .addIndex(name, index)
+#### .addIndex(name, fn)
 
-Adds an index to the table
+Adds an index of a given name. An index is basically a function that will
+take a given row and return a string (or other immutable primitive).
+
+General indexs are not unique - so many rows can generate the same key.
+
+#### .addUniqueIndex(name, fn)
+
+Adds a unique index. The `row => key` function should produce a unique
+answer for each row. The primary index should be called `main`.
 
 #### .load(source)
 
 Loads data into the database from an iterable source
 
-#### .loadAsync(source)
-
-Loads data into the database from an asynciterable source
-
 #### .upsert(row|rows)
 
-Inserts, or updates, a row or rows.
+Inserts, or updates, a row or rows, returning the actual database row(s)
+inserted or updated.
 
 To update rows, you must already have defined a unique index called `main`.
 
 #### .delete(row|rows)
 
-Deletes a row or rows
+Deletes a row or rows, return the row(s) removed. As with `upsert` this
+relies on a unique `main` index.
 
 #### .save()
 
 Saves the database. If you have supplied `onsave`, then it will call that
 providing the following two parameters:
 
-- `changed` an iterable of the rows which have changed and need to be serialised
-- `deleted` an iterable of the rows which should be deleted
+- `changed` a Set of the rows which have changed and need to be serialised
+- `deleted` a Set of the rows which should be deleted
 
-### Index
+#### .all()
 
-A class to create an index
-
-The heart of an index is a function that maps a row to a string key.
-
-#### constructor
-`const ix = new Index(fn)`
-
-#### .get(partialRow) => [Rows]
-
-
-### UniqueIndex
-
-A subclass of `Index` that only returns a single row for each key.
+An iterable of all the rows in the table.

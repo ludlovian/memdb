@@ -1,0 +1,26 @@
+{
+  "name": "memdb",
+  "version": "0.0.1",
+  "description": "In memory JSON database",
+  "main": "src/index.mjs",
+  "scripts": {
+    "clean": "rm -rf coverage/ node_modules/.cache/",
+    "lint": "standard {src,test}/**/*.mjs|snazzy",
+    "format": "prettier-standard {src,test}/**/*.mjs",
+    "test": "c8 uvu",
+    "coverage": "npm run test && c8 report --reporter=html && sirv coverage/ -p 8000 -H"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ludlovian/memdb.git"
+  },
+  "author": "",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/ludlovian/memdb/issues"
+  },
+  "homepage": "https://github.com/ludlovian/memdb#readme",
+  "devDependencies": {
+    "uvu": "^0.5.1"
+  }
+}
