@@ -4,8 +4,8 @@ export default class Table {
     this._changed = new Set()
     this._deleted = new Set()
     this._ix = {}
-    this.onsave = onsave
-    this.factory = factory
+    if (onsave) this.onsave = onsave
+    if (factory) this.factory = factory
     if (main) this.addUniqueIndex('main', main)
   }
 

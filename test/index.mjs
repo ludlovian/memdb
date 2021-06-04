@@ -190,4 +190,19 @@ test('row creation with no factory', () => {
   assert.equal(d, r)
 })
 
+test('defer to class onsave', () => {
+  let called = false
+  class T extends Table {
+    onsave () {
+      called = true
+    }
+  }
+
+  const t = new T({ main: x => x.id })
+  t.upsert({ id: 1, foo: 'bar' })
+  t.save()
+
+  assert.is(called, true)
+})
+
 test.run()
