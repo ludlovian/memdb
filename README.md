@@ -53,6 +53,14 @@ providing the following two parameters:
 - `changed` a Set of the rows which have changed and need to be serialised
 - `deleted` a Set of the rows which should be deleted
 
+#### .get(data, [indexName])
+
+Queries the index to return the row[s] matching the data. If not given, it
+uses the `main` (primary) index.
+
+Unique indexes will return a single row, or undefined. Non-unique ones
+will return a set.
+
 #### .all()
 
 An iterable of all the rows in the table.

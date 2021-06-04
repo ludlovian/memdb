@@ -39,13 +39,13 @@ test('save after load has no changes', ({ t, save }) => {
 })
 
 test('get from unique index', ({ t, Row }) => {
-  const r = t.get('main', { id: 1 })
+  const r = t.get({ id: 1 })
   assert.is(r instanceof Row, true)
   assert.equal({ ...r }, { id: 1, foo: 'bar' })
 })
 
 test('get from non-unique index', ({ t, Row }) => {
-  const rows = Array.from(t.get('foo', { foo: 'baz' }))
+  const rows = Array.from(t.get({ foo: 'baz' }, 'foo'))
 
   rows.sort((a, b) => a.id - b.id)
   assert.is(rows.length, 2)
@@ -73,7 +73,7 @@ test('save identified changed row', ({ t, Row, save }) => {
 })
 
 test('non unique index reflects updated row', ({ t }) => {
-  const rows = t.get('foo', { foo: 'baz' })
+  const rows = t.get({ foo: 'baz' }, 'foo')
 
   assert.is(rows.size, 1)
 })
@@ -86,11 +86,11 @@ test('insert new row', ({ t, Row }) => {
 })
 
 test('new row appears in indexes', ({ t, Row }) => {
-  let r = t.get('main', { id: 4 })
+  let r = t.get({ id: 4 }, 'main')
   assert.is(r instanceof Row, true)
   assert.is(r.id, 4)
 
-  r = t.get('foo', { foo: 'bar' })
+  r = t.get({ foo: 'bar' }, 'foo')
   assert.is(r.size, 3)
 })
 
@@ -108,10 +108,10 @@ test('delete row', ({ t, Row }) => {
 })
 
 test('deleted row gone from indexes', ({ t }) => {
-  let r = t.get('main', { id: 4 })
+  let r = t.get({ id: 4 })
   assert.is(r, undefined)
 
-  r = t.get('foo', { foo: 'bar' })
+  r = t.get({ foo: 'bar' }, 'foo')
   assert.is(
     [...r].some(x => x.id === 4),
     false
@@ -137,11 +137,11 @@ test('multiple rows at once', ({ t, getData, save }) => {
     { id: 4, foo: 'boof' }
   ])
 
-  assert.is(t.get('foo', { foo: 'boof' }).size, 4)
+  assert.is(t.get({ foo: 'boof' }, 'foo').size, 4)
 
   t.delete([{ id: 3 }, { id: 4 }])
 
-  assert.is(t.get('foo', { foo: 'boof' }).size, 2)
+  assert.is(t.get({ foo: 'boof' }, 'foo').size, 2)
 
   t.save()
 
@@ -165,19 +165,19 @@ test('add indexes later', ({ t, getData }) => {
   t.addUniqueIndex('main', x => x.id)
   t.addIndex('foo', x => x.foo)
 
-  assert.is(t.get('main', { id: 1 }).foo, 'bar')
-  assert.is(t.get('foo', { foo: 'baz' }).size, 2)
+  assert.is(t.get({ id: 1 }).foo, 'bar')
+  assert.is(t.get({ foo: 'baz' }, 'foo').size, 2)
 })
 
 test('query non existent index', ({ t }) => {
-  assert.throws(() => t.get('biz', {}))
+  assert.throws(() => t.get({}, 'biz'))
 })
 
 test('query index with no data', ({ t }) => {
-  let r = t.get('main', { id: 5 })
+  let r = t.get({ id: 5 })
   assert.is(r, undefined)
 
-  r = t.get('foo', { foo: 'quux' })
+  r = t.get({ foo: 'quux' }, 'foo')
   assert.is(r.size, 0)
 })
 

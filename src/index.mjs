@@ -30,7 +30,7 @@ export default class Table {
     for (const row of this._data) ix.add(row)
   }
 
-  get (k, data) {
+  get (data, k = 'main') {
     const ix = this._ix[k]
     if (!ix) throw new Error('No such index: ' + k)
     return ix.get(data)
