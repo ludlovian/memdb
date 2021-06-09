@@ -41,22 +41,18 @@ export default class Table {
       return [...data].map(d => this.upsert(d))
     }
 
-    if (this._ix.main) {
-      const row = this._ix.main.get(data)
-      if (row) {
-        for (const k in this._ix) this._ix[k].delete(row)
-        Object.assign(row, data)
-        for (const k in this._ix) this._ix[k].add(row)
-        this._changed.add(row)
-        return row
-      }
+    let row = this._ix.main && this._ix.main.get(data)
+
+    if (row) {
+      for (const k in this._ix) this._ix[k].delete(row)
+    } else {
+      const Factory = this.factory || Object
+      row = new Factory()
+      this._data.add(row)
     }
-    const Factory = this.factory || Object
-    const row = new Factory()
     Object.assign(row, data)
-    this._data.add(row)
-    this._changed.add(row)
     for (const k in this._ix) this._ix[k].add(row)
+    this._changed.add(row)
     return row
   }
 
@@ -90,7 +86,7 @@ export default class Table {
   }
 }
 
-export class Index {
+class Index {
   constructor (fn) {
     this.fn = fn
     this.map = new Map()
@@ -120,7 +116,7 @@ export class Index {
   }
 }
 
-export class UniqueIndex extends Index {
+class UniqueIndex extends Index {
   add (row) {
     const key = this.fn(row)
     this.map.set(key, row)
