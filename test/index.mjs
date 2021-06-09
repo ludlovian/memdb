@@ -205,4 +205,16 @@ test('defer to class onsave', () => {
   assert.is(called, true)
 })
 
+test('key violation', () => {
+  const t = new Table({ main: x => x.id })
+  t.addUniqueIndex('foo', x => x.foo)
+  t.upsert({ id: 1, foo: 'bar' })
+  t.upsert({ id: 1, foo: 'baz' })
+  t.upsert({ id: 2, foo: 'bar' })
+  assert.throws(
+    () => t.upsert({ id: 3, foo: 'baz' }),
+    e => e.name === 'KeyViolation' && e.row.foo === 'baz'
+  )
+})
+
 test.run()

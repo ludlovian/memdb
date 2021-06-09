@@ -119,6 +119,7 @@ class Index {
 class UniqueIndex extends Index {
   add (row) {
     const key = this.fn(row)
+    if (this.map.has(key)) throw new KeyViolation(row)
     this.map.set(key, row)
   }
 
@@ -132,3 +133,13 @@ class UniqueIndex extends Index {
     return this.map.get(key)
   }
 }
+
+class KeyViolation extends Error {
+  constructor (row) {
+    super('Key violation')
+    this.row = row
+    this.name = this.constructor.name
+  }
+}
+
+Table.KeyViolation = KeyViolation
