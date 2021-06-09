@@ -205,7 +205,7 @@ test('defer to class onsave', () => {
   assert.is(called, true)
 })
 
-test('key violation', () => {
+test('key violation on upsert', () => {
   const t = new Table({ main: x => x.id })
   t.addUniqueIndex('foo', x => x.foo)
   t.upsert({ id: 1, foo: 'bar' })
@@ -214,6 +214,19 @@ test('key violation', () => {
   assert.throws(
     () => t.upsert({ id: 3, foo: 'baz' }),
     e => e.name === 'KeyViolation' && e.row.foo === 'baz'
+  )
+})
+
+test('key violation on load', () => {
+  const t = new Table({ main: x => x.id })
+  const data = [
+    { id: 1, foo: 'bar' },
+    { id: 2, foo: 'baz' },
+    { id: 1, foo: 'quux' }
+  ]
+  assert.throws(
+    () => t.load(data),
+    e => e.name === 'KeyViolation' && e.row.foo === 'quux'
   )
 })
 
