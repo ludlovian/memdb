@@ -1,0 +1,32 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@ludlovian/debug':
+        specifier: github:ludlovian/debug
+        version: https://codeload.github.com/ludlovian/debug/tar.gz/720a2f06021239565dd0b62aa823fd8741705a30
+      '@ludlovian/equal':
+        specifier: github:ludlovian/equal
+        version: https://codeload.github.com/ludlovian/equal/tar.gz/9af158101cc2b0cee715fb85b0f61a26858f24c5
+
+packages:
+
+  '@ludlovian/debug@https://codeload.github.com/ludlovian/debug/tar.gz/720a2f06021239565dd0b62aa823fd8741705a30':
+    resolution: {tarball: https://codeload.github.com/ludlovian/debug/tar.gz/720a2f06021239565dd0b62aa823fd8741705a30}
+    version: 0.2.0
+
+  '@ludlovian/equal@https://codeload.github.com/ludlovian/equal/tar.gz/9af158101cc2b0cee715fb85b0f61a26858f24c5':
+    resolution: {tarball: https://codeload.github.com/ludlovian/equal/tar.gz/9af158101cc2b0cee715fb85b0f61a26858f24c5}
+    version: 0.1.0
+
+snapshots:
+
+  '@ludlovian/debug@https://codeload.github.com/ludlovian/debug/tar.gz/720a2f06021239565dd0b62aa823fd8741705a30': {}
+
+  '@ludlovian/equal@https://codeload.github.com/ludlovian/equal/tar.gz/9af158101cc2b0cee715fb85b0f61a26858f24c5': {}
