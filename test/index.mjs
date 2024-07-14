@@ -7,7 +7,9 @@ suite('Table', () => {
   const cols = 'k1,k2,foo'
   const key = 'k1,k2'
   test('table creation', () => {
-    assert.doesNotThrow(() => new Table({ cols, key }))
+    const t = new Table({ cols, key })
+    assert.deepStrictEqual(t.cols, ['k1', 'k2', 'foo'])
+    assert.deepStrictEqual(t.key, ['k1', 'k2'])
   })
 
   test('add delete update via table', () => {

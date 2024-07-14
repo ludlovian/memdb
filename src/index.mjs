@@ -47,6 +47,14 @@ export default class Table {
   // Public API
   //
 
+  get cols () {
+    return keys(this.#columns)
+  }
+
+  get key () {
+    return [...this.#key]
+  }
+
   //
   // Clear
   //
